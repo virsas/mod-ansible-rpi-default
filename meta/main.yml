@@ -1,0 +1,13 @@
+---
+galaxy_info:
+  author: Stefan Moravcik <stefan@virsas.com>
+  description: Basic configuration for all Raspberry PI
+  company: Virsas
+  min_ansible_version: 1.9
+  platforms:
+  - name: Debian
+    versions:
+    - Raspbian
+  categories:
+  - system
+  - Common

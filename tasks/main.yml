@@ -1,0 +1,51 @@
+---
+
+- name: Set timezone
+  timezone:
+    name: "{{ TIMEZONE }}"
+
+- name: Set locale
+  locale_gen:
+    name: "{{ LOCALE }}"
+
+- name: Install default packages
+  apt:
+    name: ['screen', 'postfix']
+    state: present
+    update_cache: yes
+
+- name: Copy default files
+  template:
+    src: "{{ item.source }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { source: "etc/environment.j2", destination: "/etc/environment", mode: "0600", user: "root", group: "root"}
+
+- name: Copy postfix configuration
+  template:
+    src: "{{ item.source }}"
+    dest: "{{ item.destination }}"
+    owner: "{{ item.user }}"
+    group: "{{ item.group }}"
+    mode: "{{ item.mode }}"
+  with_items:
+    - { source: "etc/postfix/main.cf.j2", destination: "/etc/postfix/main.cf", mode: "0655", user: "root", group: "root"}
+  notify:
+    - restart postfix
+
+- name: edit aliases files
+  lineinfile:
+    path: /etc/aliases
+    regexp: "^root:"
+    line: "root: {{ root_mail_forward }}"
+  notify:
+    - postalias
+
+- name: enable postfix server
+  service:
+    name: postfix
+    enabled: yes
+    state: started

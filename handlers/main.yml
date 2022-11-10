@@ -1,0 +1,11 @@
+---
+# Handlers
+
+- name: restart postfix
+  systemd:
+    daemon_reload: true
+    name: postfix
+    state: restarted
+
+- name: postalias
+  action: command postalias /etc/aliases

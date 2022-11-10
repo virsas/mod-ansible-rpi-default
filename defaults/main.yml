@@ -1,0 +1,9 @@
+---
+
+TIMEZONE: Europe/Prague
+LOCALE: en_US.UTF-8
+LC_ALL: en_US.utf8
+
+MAILNAME: MTA
+MYNETWORKS: 127.0.0.1/32
+MYORIGIN: localhost
